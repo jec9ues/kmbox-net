@@ -1,0 +1,17 @@
+[package]
+name = "kmbox-net"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tokio = { version = "1.27.0", features = ["full"] }
+rand = { version = "0.8.5", features = [] }
+serde = {version = "1.0.188", features = ["derive", "serde_derive"] }
+bincode = {version = "2.0.0-rc.3", features = ["serde", "derive"]}
+hex = { version = "0.4.3" }
+winapi = { version = "0.3.9" , features = ["winsock2", "minwindef", "ws2def", "inaddr", ]}
+stdlib-rs = "0.0.2"
+[build-dependencies]
+bindgen = "0.68.1"
