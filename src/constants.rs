@@ -6,47 +6,32 @@ use crate::constants::NetErr::ErrNetTx;
 
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CmdHead {
-    pub mac: u64,           //盒子的mac地址（必须）
-    pub rand: u64,          //随机值
-    pub indexpts: u64,      //时间戳
-    pub cmd: u64,           //指令码
+    pub mac: u32,           //盒子的mac地址（必须）
+    pub rand: u32,          //随机值
+    pub indexpts: u32,      //时间戳
+    pub cmd: u32,           //指令码
 }
 
-/*#[derive(Debug, Serialize, Deserialize, Default)]
-struct CmdU8 {
-    buff: [u8; 1024]
-}
 
 #[derive(Debug, Serialize, Deserialize, Default)]
-struct CmdU16 {
-    buff: [u16; 512]
+pub struct SoftMouse {
+    pub button: i32,
+    pub x: i32,
+    pub y: i32,
+    pub wheel: i32,
+    pub point: [i32; 10],  // 用于贝塞尔曲线控制（预留5阶导）
 }
 #[derive(Debug, Serialize, Deserialize, Default)]
-struct SoftMouse {
-    button: i32,
-    x: i32,
-    y: i32,
-    wheel: i32,
-    point: [i32; 10],  // 用于贝塞尔曲线控制（预留5阶导）
+pub struct SoftKeyboard {
+    pub ctrl: i8,
+    pub resvel: i8,
+    pub button: [i8; 10],
 }
-#[derive(Debug, Serialize, Deserialize, Default)]
-struct SoftKeyboard {
-    ctrl: i8,
-    resvel: i8,
-    button: [i8; 10],
-}
-
-enum CmdBody {
-    U8buff(CmdU8),	  //buff
-    U16buff(CmdU16),	  //U16
-    CmdMouse(SoftMouse),    //鼠标发送指令
-    CmdKeyboard(SoftKeyboard), //键盘发送指令
-    None
-}*/
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct ClientTx {
     pub head: CmdHead,
 }
+
 
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct StandardMouseReport {
@@ -79,16 +64,17 @@ pub fn str_to_hex(pb_src: &str, n_len: usize) -> u32 {
     pb_dest[0] << 24 | pb_dest[1] << 16 | pb_dest[2] << 8 | pb_dest[3]
 }
 
-pub fn net_rx_return_handle(rx: &ClientTx, tx: &ClientTx) -> NetErr {
-    if rx.head.cmd != tx.head.cmd {
+pub fn net_rx_return_handle(rx: &CmdHead, tx: &CmdHead) -> NetErr {
+    if rx.cmd != tx.cmd {
         return  NetErr::ErrNetCmd;//命令码错误
     }
 
-    if rx.head.indexpts != tx.head.indexpts {
+    if rx.indexpts != tx.indexpts {
         return  NetErr::ErrNetPts;//时间戳错误
     }
     return NetErr::Success
 }
+#[derive(Debug)]
 pub enum NetErr {
     ErrCreatSocket,	        //创建socket失败
     ErrNetVersion,	    	//socket版本错误
