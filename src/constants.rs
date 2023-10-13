@@ -2,8 +2,22 @@
 use serde::{Serialize, Deserialize};
 use serde::de::value::U64Deserializer;
 use crate::constants::NetErr::ErrNetTx;
+pub struct Pos2 {
+    pub x: i32,
+    pub y: i32,
+}
 
+#[derive(Debug, Serialize, Deserialize, Default)]
+pub struct CmdMouse {
+    pub(crate) head: CmdHead,
+    pub(crate) mouse: SoftMouse,
+}
 
+#[derive(Debug, Serialize, Deserialize, Default)]
+pub struct CmdKeyboard {
+    head: CmdHead,
+    keyboard: SoftKeyboard,
+}
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CmdHead {
     pub mac: u32,           //盒子的mac地址（必须）
