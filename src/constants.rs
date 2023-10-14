@@ -9,14 +9,14 @@ pub struct Pos2 {
 
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CmdMouse {
-    pub(crate) head: CmdHead,
-    pub(crate) mouse: SoftMouse,
+    pub head: CmdHead,
+    pub mouse: SoftMouse,
 }
 
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CmdKeyboard {
-    head: CmdHead,
-    keyboard: SoftKeyboard,
+    pub head: CmdHead,
+    pub keyboard: SoftKeyboard,
 }
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct CmdHead {
@@ -56,7 +56,7 @@ pub struct StandardMouseReport {
     pub wheel: i16,   // -32767 到 32767
 }
 #[derive(Debug, Serialize, Deserialize, Default)]
-struct StandardKeyboardReport {
+pub struct StandardKeyboardReport {
     pub report_id: u8,
     pub buttons: u8,      // 8个按钮控制键
     pub data: [u8; 10],    // 常规按键数据
